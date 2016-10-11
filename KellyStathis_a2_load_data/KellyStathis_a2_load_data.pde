@@ -52,8 +52,8 @@ void setup() {
   // Get column headers and initialize colMins, colMaxes, and positiveAxis (orientation) arrays
   for (int j = 0; j < numCols; j++) {
     colNames[j] = table.getString(0, j+1);
-    colMins[j] = Integer.MAX_VALUE; // until min is found
-    colMaxes[j] = Integer.MIN_VALUE; // until max is found
+    colMins[j] = 2147483647; // until min is found
+    colMaxes[j] = -2147483648; // until max is found
     positiveAxisBottom[j] = false; // maximum at top
     highlightedCols[j] = false; // no highlighted cols to start
   }
