@@ -433,6 +433,14 @@ class Table
     else
     { return split(line, ','); }
   }
+  
+  String getString(int i, int j) {
+    return data[i].getStringAt(j);
+  }
+  
+  int getInt(int i, int j) {
+    return data[i].getIntAt(j);
+  }
 }
 
 // NOTE: this will not work if you are in Java mode (just comment out the whole file, then uncomment it when you switch to JavaScript mode)
@@ -482,6 +490,14 @@ class TableRow
   float getFloat(String label)
   {
     return float(trim(getString(label)));
+  }
+  
+  String getStringAt(int j) {
+    return data[j];
+  }
+  
+  int getIntAt(int j) {
+    return int(trim(getStringAt(j)));
   }
 }
 void mouseClicked() {
