@@ -392,6 +392,9 @@ class Table
   void initialize(String filename, String options)
   {
     String[] lines = loadStrings(filename);
+    if (options == null) {
+      options = "";
+    }
     int numcols = 0;
     numcols = lineSplit(lines[0], options).length; 
     
