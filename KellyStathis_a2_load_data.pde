@@ -382,6 +382,7 @@ class Table
   String[] header;
   String delimiter = ",";
   int numrows;
+  int numcols;
   
   Table(String filename)
   { initialize(filename, ""); }
@@ -395,7 +396,6 @@ class Table
     if (options == null) {
       options = "";
     }
-    int numcols = 0;
     numcols = lineSplit(lines[0], options).length; 
     
     int start = 0;
