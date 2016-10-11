@@ -87,7 +87,7 @@ void setup() {
   }
  
   // Configure surface
-  size(600,300);
+  size(1000,500);
   //surface.setResizable(true); // allows you to resize the canvas
 }
 

@@ -1,6 +1,6 @@
 // Data
 Table table;
-String path = "weather-by-state.csv";
+String path = "data/weather-by-state.csv";
 int[][] tableData;
 int numRows, numCols;
 String[] rowNames, colNames;
@@ -30,15 +30,10 @@ boolean drawRectangle = false;
 
 void setup() {
   // Open the data file
-  /*
   table = loadTable(path);
   // Get number of rows and columns
   numRows = table.getRowCount() - 1;
   numCols = table.getColumnCount() - 1;
-  */
-  // Hard code some data because loadTable not supported by processing 1.4.8
-  numRows = 3;
-  numCols = 3;
   
   // Store data info
   tableData = new int[numRows][numCols];
@@ -56,9 +51,9 @@ void setup() {
   
   // Get column headers and initialize colMins, colMaxes, and positiveAxis (orientation) arrays
   for (int j = 0; j < numCols; j++) {
-    //colNames[j] = table.getString(0, j+1);
-    //colMins[j] = Integer.MAX_VALUE; // until min is found
-    //colMaxes[j] = Integer.MIN_VALUE; // until max is found
+    colNames[j] = table.getString(0, j+1);
+    colMins[j] = 2147483647; // until min is found
+    colMaxes[j] = -2147483648; // until max is found
     positiveAxisBottom[j] = false; // maximum at top
     highlightedCols[j] = false; // no highlighted cols to start
   }
@@ -67,7 +62,6 @@ void setup() {
   int r = 0;
   int b = 255;
   int interval = 255/(numRows-1);
-  println("interval: " + interval);
   for (int i = 0; i < numRows; i++) {
     highlightedRows[i] = false;
     gradientColors[i] = color(r, 0, b);
@@ -75,7 +69,6 @@ void setup() {
     b -= interval;
   }
   
-  /*
   // Get numerical (integer) data and populate colMins and colMaxes arrays
   for (int i = 0; i < numRows; i++) {
     // Get row names
@@ -92,32 +85,9 @@ void setup() {
       }
     }
   }
-  */
-  // Hard code values because loadTable not supported by processing 1.4.8
-  rowNames[0] = "Alice";
-  rowNames[1] = "Bob";
-  rowNames[2] = "Caroline";
-  colNames[0] = "Age";
-  colNames[1] = "Grade";
-  colNames[2] = "Height (in.)";
-  tableData[0][0] = 12;
-  tableData[0][1] = 7;
-  tableData[0][2] = 59;
-  tableData[1][0] = 6;
-  tableData[1][1] = 1;
-  tableData[1][2] = 42;
-  tableData[2][0] = 18;
-  tableData[2][1] = 12;
-  tableData[2][2] = 65;
-  colMins[0] = 6;
-  colMaxes[0] = 18;
-  colMins[1] = 1;
-  colMaxes[1] = 12;
-  colMins[2] = 42;
-  colMaxes[2] = 65;
  
   // Configure surface
-  size(600,300);
+  size(1000,500);
   //surface.setResizable(true); // allows you to resize the canvas
 }
 
@@ -395,6 +365,138 @@ class parallelCoordinates {
         return false;
       }
     }
+  }
+}
+
+
+// via http://accad.osu.edu/~jeisenma/teaching/id/id/examples/LoadTable/web-export/LoadTable.pde
+Table loadTable(String file, String options) { 
+  Table t = new Table(file,options);
+  return t; 
+}
+  
+class Table
+{
+  TableRow[] data;
+  String[] header;
+  String delimiter = ",";
+  int numrows;
+  int numcols;
+  
+  Table(String filename)
+  { initialize(filename, ""); }
+  
+  Table(String filename, String option)
+  { initialize(filename, option); }
+  
+  void initialize(String filename, String options)
+  {
+    String[] lines = loadStrings(filename);
+    if (options == null) {
+      options = "";
+    }
+    numcols = lineSplit(lines[0], options).length; 
+    
+    int start = 0;
+    if(options.contains("header"))
+    {
+      header = lineSplit(lines[0], options);
+      start++;
+    }
+    else
+    { header = null; }
+    
+    numrows = lines.length-start;
+    
+    data = new TableRow[numrows];
+    for( int i=start; i<lines.length; i++)
+    {
+      String[] cells = lineSplit(lines[i], options);
+      data[i-start] = new TableRow(cells, header);
+    }
+  }
+  
+  int getRowCount()
+  { return numrows; }
+  
+  int getColumnCount()
+  { return numcols; }
+  
+  TableRow[] rows()
+  { return data; }
+  
+  String[] lineSplit(String line, String options)
+  {
+    if(options.contains("tsv"))
+    { return splitTokens(line); }
+    else
+    { return split(line, ','); }
+  }
+  
+  String getString(int i, int j) {
+    return data[i].getStringAt(j);
+  }
+  
+  int getInt(int i, int j) {
+    return data[i].getIntAt(j);
+  }
+}
+
+// NOTE: this will not work if you are in Java mode (just comment out the whole file, then uncomment it when you switch to JavaScript mode)
+class TableRow
+{
+  String[] labels;
+  String[] data;
+  
+  TableRow(String[] D, String[] L)
+  {
+    if( L != null )
+    {
+      labels = new String[L.length];
+      for(int i=0; i<L.length; i++)
+      { labels[i] = L[i]; }
+    }
+    else
+    { labels = null; }
+    data = new String[D.length];
+    for(int i=0; i<D.length; i++)
+    { data[i] = D[i]; }
+  }
+  
+  String getString(String label)
+  {
+    if( labels != null )
+    {
+      for(int i=0; i<labels.length; i++)
+      { 
+        if(labels[i].equals(label))
+        { return data[i]; }
+      }
+    }
+    else
+    {
+      println("Table does not have headers.");
+    }
+    println("label "+label+" not found");
+    return null;
+  }
+   
+  int getInt(String label)
+  {
+    return int(trim(getString(label)));
+  } 
+  
+  float getFloat(String label)
+  {
+    return float(trim(getString(label)));
+  }
+  
+  String getStringAt(int j) {
+    return data[j];
+  }
+  
+  int getIntAt(int j) {
+    return int(trim(getStringAt(j)));
   }
 }
 void mouseClicked() {
