@@ -1,6 +1,6 @@
 // Data
 Table table;
-String path = "data/weather-by-state.csv";
+String path = "KellyStathis_a2_web/data/weather-by-state.csv";
 int[][] tableData;
 int numRows, numCols;
 String[] rowNames, colNames;
