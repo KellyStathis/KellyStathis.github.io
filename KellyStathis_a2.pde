@@ -117,7 +117,7 @@ void setup() {
   colMaxes[2] = 65;
  
   // Configure surface
-  //size(1200,600);
+  size(600,300);
   //surface.setResizable(true); // allows you to resize the canvas
 }
 
