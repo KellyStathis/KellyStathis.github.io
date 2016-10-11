@@ -420,6 +420,9 @@ class Table
   int getRowCount()
   { return numrows; }
   
+  int getColumnCount()
+  { return numcols; }
+  
   TableRow[] rows()
   { return data; }
   
