@@ -30,16 +30,23 @@ boolean drawRectangle = false;
 
 void setup() {
   // Open the data file
+  /*
   table = loadTable(path);
   // Get number of rows and columns
   numRows = table.getRowCount() - 1;
   numCols = table.getColumnCount() - 1;
+  */
+  // Hard code some data because loadTable not supported by processing 1.4.8
+  numRows = 3;
+  numCols = 3;
+  
   // Store data info
   tableData = new int[numRows][numCols];
   rowNames = new String[numRows];
   colNames = new String[numCols];
   colMins = new int[numCols];
   colMaxes = new int[numCols];
+  
   // Initialize arrays for highlighting lines and axis orientation
   highlightedRows = new boolean[numRows];
   highlightedCols = new boolean[numCols];
@@ -49,7 +56,7 @@ void setup() {
   
   // Get column headers and initialize colMins, colMaxes, and positiveAxis (orientation) arrays
   for (int j = 0; j < numCols; j++) {
-    colNames[j] = table.getString(0, j+1);
+    //colNames[j] = table.getString(0, j+1);
     colMins[j] = Integer.MAX_VALUE; // until min is found
     colMaxes[j] = Integer.MIN_VALUE; // until max is found
     positiveAxisBottom[j] = false; // maximum at top
@@ -68,6 +75,7 @@ void setup() {
     b -= interval;
   }
   
+  /*
   // Get numerical (integer) data and populate colMins and colMaxes arrays
   for (int i = 0; i < numRows; i++) {
     // Get row names
@@ -84,6 +92,29 @@ void setup() {
       }
     }
   }
+  */
+  // Hard code values because loadTable not supported by processing 1.4.8
+  rowNames[0] = "Alice";
+  rowNames[1] = "Bob";
+  rowNames[2] = "Caroline";
+  colNames[0] = "Age";
+  colNames[1] = "Grade";
+  colNames[2] = "Height (in.)";
+  tableData[0][0] = 12;
+  tableData[0][1] = 7;
+  tableData[0][2] = 59;
+  tableData[1][0] = 6;
+  tableData[1][1] = 1;
+  tableData[1][2] = 42;
+  tableData[2][0] = 18;
+  tableData[2][1] = 12;
+  tableData[2][2] = 65;
+  colMins[0] = 6;
+  colMaxes[0] = 18;
+  colMins[1] = 1;
+  colMaxes[1] = 12;
+  colMins[2] = 42;
+  colMaxes[2] = 65;
  
   // Configure surface
   size(1200,600);
