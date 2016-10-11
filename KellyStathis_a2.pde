@@ -92,14 +92,7 @@ void setup() {
 
 void draw() {
   background(255, 255, 255); // white background
-  drawAxes();
-  drawLines();
-  if (drawRectangle) {
-     drawRectangle();
-  }
-}
-
-void drawAxes() {
+  //drawAxes();
   distanceBetweenAxes = (width - leftOffset - rightOffset) / (numCols-1);
   int axisX = leftOffset;
   int axisLeftEdge = axisX - 5;
@@ -158,9 +151,8 @@ void drawAxes() {
     axisLeftEdge += distanceBetweenAxes;
     axisRightEdge += distanceBetweenAxes;
   }
-}
-
-void drawLines() {
+  
+  //drawLines();
   // Initialize highlighted rows array to 0s
   for (int i = 0; i < numRows; i++) {
     highlightedRows[i] = false;
@@ -285,6 +277,16 @@ void drawLines() {
     }
     text(labelText, mouseX, mouseY);
   }
+
+  if (drawRectangle) {
+     //drawRectangle();
+     // User-created rectangle (click and drag)
+     rectMode(CORNER);
+     strokeWeight(1);
+     fill(255,255,255, 0);
+     stroke(0,0,0);
+     rect(mouseXCoord, mouseYCoord, rectWidth, rectHeight);
+  }
 }
 
 void drawHighlightedLinesSubset(int i, int first, int last) {
@@ -314,15 +316,6 @@ void drawHighlightedLinesSubset(int i, int first, int last) {
       strokeWeight(2);
       line(Px, Py, Qx, Qy);
   }
-}
-
-void drawRectangle() {
-  // User-created rectangle (click and drag)
-  rectMode(CORNER);
-  strokeWeight(1);
-  fill(255,255,255, 0);
-  stroke(0,0,0);
-  rect(mouseXCoord, mouseYCoord, rectWidth, rectHeight);
 }
 
 void mouseClicked() {
