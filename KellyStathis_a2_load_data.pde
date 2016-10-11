@@ -368,6 +368,116 @@ class parallelCoordinates {
     }
   }
 }
+
+
+// via http://accad.osu.edu/~jeisenma/teaching/id/id/examples/LoadTable/web-export/LoadTable.pde
+Table loadTable(String file, String options) { 
+  Table t = new Table(file,options);
+  return t; 
+}
+  
+class Table
+{
+  TableRow[] data;
+  String[] header;
+  String delimiter = ",";
+  int numrows;
+  
+  Table(String filename)
+  { initialize(filename, ""); }
+  
+  Table(String filename, String option)
+  { initialize(filename, option); }
+  
+  void initialize(String filename, String options)
+  {
+    String[] lines = loadStrings(filename);
+    int numcols = 0;
+    numcols = lineSplit(lines[0], options).length; 
+    
+    int start = 0;
+    if(options.contains("header"))
+    {
+      header = lineSplit(lines[0], options);
+      start++;
+    }
+    else
+    { header = null; }
+    
+    numrows = lines.length-start;
+    
+    data = new TableRow[numrows];
+    for( int i=start; i<lines.length; i++)
+    {
+      String[] cells = lineSplit(lines[i], options);
+      data[i-start] = new TableRow(cells, header);
+    }
+  }
+  
+  int getRowCount()
+  { return numrows; }
+  
+  TableRow[] rows()
+  { return data; }
+  
+  String[] lineSplit(String line, String options)
+  {
+    if(options.contains("tsv"))
+    { return splitTokens(line); }
+    else
+    { return split(line, ','); }
+  }
+}
+
+// NOTE: this will not work if you are in Java mode (just comment out the whole file, then uncomment it when you switch to JavaScript mode)
+class TableRow
+{
+  String[] labels;
+  String[] data;
+  
+  TableRow(String[] D, String[] L)
+  {
+    if( L != null )
+    {
+      labels = new String[L.length];
+      for(int i=0; i<L.length; i++)
+      { labels[i] = L[i]; }
+    }
+    else
+    { labels = null; }
+    data = new String[D.length];
+    for(int i=0; i<D.length; i++)
+    { data[i] = D[i]; }
+  }
+  
+  String getString(String label)
+  {
+    if( labels != null )
+    {
+      for(int i=0; i<labels.length; i++)
+      { 
+        if(labels[i].equals(label))
+        { return data[i]; }
+      }
+    }
+    else
+    {
+      println("Table does not have headers.");
+    }
+    println("label "+label+" not found");
+    return null;
+  }
+   
+  int getInt(String label)
+  {
+    return int(trim(getString(label)));
+  } 
+  
+  float getFloat(String label)
+  {
+    return float(trim(getString(label)));
+  }
+}
 void mouseClicked() {
   // Switch axis orientation
   if (Math.abs(mouseY - (height-bottomOffset+40)) <= 12/2) {
