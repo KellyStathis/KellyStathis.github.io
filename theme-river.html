@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Theme River</title>
+		<style>
+			body {
+			  margin: auto;
+			  position: relative;
+			  width: 960px;
+			}
+			.axis path, .axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			.axis text {
+				font-family: sans-serif;
+				font-size: 12px;
+			}
+			/* from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369 */
+			div.tooltip {	
+				position: relative;			
+				text-align: center;			
+				width: 100px;						
+				padding: 2px;				
+				font: 12px sans-serif;		
+				background: #D6EAF8;
+				border: 1px;		
+				border-radius: 8px;					
+			}
+
+		</style>
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    </head>
+    <body>
+        <script type="text/javascript">
+			var width = 1000;
+			var height = 700;
+			var paddingBelowAxis = 20;
+			var paddingChart = 10;
+			var paddingSide = 50;
+			
+			// Parse CSV file to correct format for layers
+			d3.text("LISjobs.csv", function(unparsedData) {
+				var rows = d3.csv.parseRows(unparsedData);
+				var firstLabel = rows[0][0];
+				d3.csv("LISjobs.csv", function(data) {
+					var dataset = [];
+					var numRows = data.length;
+					var numCols = Object.keys(data[0]).length;
+					for (var rowIndex in data) {
+						var values = [];
+						for (var value in data[rowIndex]) {
+							var x = parseInt(value);
+							var y = parseInt(data[rowIndex][value]);
+							if (!isNaN(x)) {
+								if (isNaN(y)) {
+									y = 0;
+								}
+								values.push({
+									"x": x,
+									"y": y,
+								 });
+							}
+						}
+						var rowObject = {
+							"name": data[rowIndex][firstLabel],
+							"values": values
+						};
+						dataset.push(rowObject);
+					}
+					
+					// Set up svg adn stack
+					var svg = d3.select("body").append("svg")
+						.attr("width", width)
+						.attr("height", height);
+				 
+					var stack = d3.layout.stack()
+						.offset("wiggle")
+						.values(function(d) {
+							return d.values;
+						});
+						
+					var layers = stack(dataset);
+					
+					// Find max and min:
+					var maxY = d3.max(layers, function(l){
+							return d3.max(l.values, function(v) {
+								return v.y + v.y0;
+								});
+						});
+					var maxX = d3.max(layers, function(l) {
+						return d3.max(l.values, function(v) {
+							return v.x;
+						});
+					});
+					var minX = d3.min(layers, function(l) {
+						return d3.min(l.values, function(v) {
+							return v.x;
+						});
+					});
+					
+					// Set up scales, axis, and area	
+					var xScale = d3.scale.linear()
+						.domain([minX, maxX])
+						.range([paddingSide, width-paddingSide]);
+				
+					var yScale = d3.scale.linear()
+						.domain([0, maxY])
+						.range([height-paddingChart-paddingBelowAxis, paddingChart]);
+						
+					var xAxis = d3.svg.axis()
+						.scale(xScale)
+						.orient("bottom")
+						.ticks(numCols-1);
+					
+					var area = d3.svg.area()
+						.x(function(d) {
+							return xScale(d.x); })
+						.y0(function(d) {
+							return yScale(d.y0)})
+						.y1(function(d) {
+							return yScale(d.y0 + d.y);
+					});
+						
+					// Functions to calculate random colors
+					var color = function() {
+						var r = Math.floor(Math.random()*255);
+						var g = Math.floor(Math.random()*255);
+						var b = Math.floor(Math.random()*255);
+						
+						r = decimalToHex(r);
+						g = decimalToHex(g);
+						b = decimalToHex(b);
+
+						var hexColor = "#" + r + g + b;
+						return hexColor;
+					}
+					
+					// Helper function to convert decimal number between 0 and 255 to 2-digit hex
+					var decimalToHex = function(dec) {
+						var firstDigit = Math.floor(dec / 16);
+						var secondDigit = Math.floor(dec - (16*firstDigit));
+						
+						if (firstDigit == 10) {
+                            firstDigit = "A";
+                        }
+						else if (firstDigit == 11) {
+							firstDigit = "B";
+                        }
+						else if (firstDigit == 12) {
+							firstDigit = "C";
+                        }
+						else if (firstDigit == 13) {
+							firstDigit = "D";
+                        }
+						else if (firstDigit == 14) {
+							firstDigit = "E";
+                        }
+						else if (firstDigit == 15) {
+							firstDigit = "F";
+                        }
+						else if (firstDigit < 10) {
+                            firstDigit = firstDigit.toString();
+                        }
+						
+						if (secondDigit == 10) {
+                            secondDigit = "A";
+                        }
+						else if (secondDigit == 11) {
+							secondDigit = "B";
+                        }
+						else if (secondDigit == 12) {
+							secondDigit = "C";
+                        }
+						else if (secondDigit == 13) {
+							secondDigit = "D";
+                        }
+						else if (secondDigit == 14) {
+							secondDigit = "E";
+                        }
+						else if (secondDigit == 15) {
+							secondDigit = "F";
+                        }
+						else if (secondDigit < 10) {
+                            secondDigit = secondDigit.toString();
+                        }
+						
+						return "" + firstDigit + secondDigit;
+					}
+					
+					// Function to delete tooltips
+					var deleteTooltips = function() {
+						var tooltips = document.getElementsByClassName("tooltip");
+						var numTooltips = tooltips.length;
+							for (var i = 0; i < numTooltips; i++) {
+								if (tooltips.length > 0) {
+									tooltips[0].parentNode.removeChild(tooltips[0]);
+								}
+							}
+					}
+					
+					// Add paths for each layer
+					svg.selectAll("path")
+						.data(layers)
+						.enter().append("path")
+						.attr("d", function(d) { return area(d.values); })
+						.style("fill", function() { return color(Math.random());})
+						.on("mousemove", function (d) {
+							// Show tooltip
+							// from https://bl.ocks.org/mbostock/3231298
+							deleteTooltips();
+							var mouseX = d3.mouse(this)[0];
+							var mouseY = d3.mouse(this)[1];
+							var x = Math.round(xScale.invert(mouseX));
+							var y = d.values[x-minX].y;
+							var tooltipText = "(" + d.name + ", " + x + ", " + y + ")";
+							d3.select("body").append("div")
+								.attr("class", "tooltip")
+								.style("left", mouseX + "px")
+								.style("top", mouseY-height + "px")
+								.append("text")
+								.text(tooltipText);
+						})
+						.on("mouseout", function() {
+							deleteTooltips();
+						});
+					
+					// Add x-axis	
+					svg.append("g")
+						.attr("class", "axis")
+						.attr("transform", "translate(0," + (height - paddingBelowAxis) + ")")
+						.call(xAxis);
+				});
+		
+			});
+		</script>
+    </body>
+</html>
