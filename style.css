@@ -1,0 +1,103 @@
+body {
+    font-family: "Helvetica-Neue", Helvetica, Arial, sans-serif;
+    margin: auto;
+    position: relative;
+}
+li {
+    padding: 2px;
+}
+h1 {
+    font-size: 4em;
+    font-weight: bold;
+}
+
+/* d3 axes */
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.axis-title {
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: "middle";
+}
+.axis-title-small {
+    font-size: 9px;
+    font-weight: bold;
+    text-anchor: "middle";
+}
+.axis-cat-label {
+    text-anchor: "middle";
+}
+
+/* tooltip */
+div.tooltip {	
+    position: absolute;
+    background: #fff;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #000;
+    pointer-events: none;
+}
+.category {
+    font-weight: bold;
+    float: left;
+}
+.value {
+    margin-left: 6px;
+    margin-top: 0.5px;
+    float: right;
+    color: #5B6E8C;
+}
+
+/* datapoint */
+.detail-value {
+    color: #666;
+}
+.detail-name {
+    font-weight: bold;
+}
+
+/* dropdowns */
+#column-selector {
+    color: #666;
+    text-align: center;
+    margin: 10px;
+    font-size: 1.2em;
+}
+#dropdownMenu1,
+#dropdownMenu2 {
+    margin-bottom: 0.25em;
+    font-size: 1.2em;
+}
+.dropdown {
+    display: inline-block;
+}
+.dropdown-toggle {
+    color: #000;
+    background-color: #eee;
+    border: 0;
+    padding: 6px;
+    min-width: 2em;
+}
+
+/* suggestions */
+.suggestions {
+    margin-bottom: 4px;
+}
+
+/* layout */
+#plot {
+    height: 548px;
+}
+#credits {
+    color: #bbb;
+    font-size: 0.75em;
+    text-align: right;
+}

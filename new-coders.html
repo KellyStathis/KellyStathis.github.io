@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <title>New Coders</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.1.1.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="plot.js"></script>
+</head>
+<body onload="onload();">
+    <div class="container">
+        <h1>New Coders</h1>
+        <div id="column-selector">
+            I want to see
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    ______
+                    <!--<span class="caret"></span>-->
+                </button>
+                <ul class="dropdown-menu" id="dropdown-menu-1" aria-labelledby="dropdownMenu1">
+                </ul>
+            </div>
+            compared to
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    ______
+                    <!--<span class="caret"></span>-->
+                </button>
+                <ul class="dropdown-menu" id="dropdown-menu-2" aria-labelledby="dropdownMenu2">
+                    <!--<li><a class="dropdown-value-2" href="#">Another column</a></li>
+                    <li><a class="dropdown-value-2" href="#">Something else</a></li>-->
+                </ul>
+            </div>
+            .
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="plot"></div>
+            <!--<div class="col-md-2" id="legend"></div>-->
+        </div>
+        <div>
+            <h3>Suggestions</h3>
+            <div class="col-md-6 suggestions">
+                <a href="javascript:showSuggestion('Gender','JobRoleInterest')" class="btn btn-default btn-block suggestions">How does gender relate to job role interest?</a>
+                <a href="javascript:showSuggestion('MaritalStatus','HoursLearning')" class="btn btn-default btn-block suggestions">How does marital status relate to hours spent learning per week?</a>
+                <a href="javascript:showSuggestion('Age','ExpectedEarning')" class="btn btn-default btn-block suggestions">How does age relate to expected earning?</a>
+            </div>
+            <div class="col-md-6 suggestions">
+                <a href="javascript:showSuggestion('CityPopulation','BootcampPostSalary')" class="btn btn-default btn-block suggestions">How does city population relate to post-bootcamp salary?</a>
+                <a href="javascript:showSuggestion('SchoolDegree','BootcampPostSalary')" class="btn btn-default btn-block suggestions">How does highest degree earned relate to post-bootcamp salary?</a>
+                <a href="javascript:showSuggestion('EmploymentField','JobRoleInterest')" class="btn btn-default btn-block suggestions">How does current field of employment relate to job role interest?</a>
+                
+            </div>
+        </div>
+        <div id="about">
+            <h3>About the data</h3>
+            <p>
+                This data comes from the <a href="https://github.com/FreeCodeCamp/2016-new-coder-survey">2016 New Coder Survey</a> conducted by <a href="https://twitter.com/FreeCodeCamp/">Free Code Camp</a>, and created by <a href="https://twitter.com/ossia">Quincy Larson</a> and <a href="https://twitter.com/saronyitbarek">Saron Yitbarek</a>.
+                The survey had 15,620 responses to 43 questions; some questions were asked only as a follow-up, and none were required.
+                Of the 43 questions, 22 were demographic questions and the rest related to coding.
+            </p>
+            <p>
+                You can find a more detailed breakdown of the dataset <a href="https://github.com/FreeCodeCamp/2016-new-coder-survey/blob/master/survey-data-dictionary.md">here</a>.
+            </p>
+        </div>
+        <div id="credits">
+            <p>
+                Created by Evan Balzuweit and Kelly Stathis.
+            </p>
+        </div>
+    </div>
+</body>
