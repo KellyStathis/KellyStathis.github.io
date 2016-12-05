@@ -68,12 +68,9 @@ function dropdownChanged() {
     if (firstCatName === null || secondCatName === null) {
         return;
     }
-    console.log(firstCatName + ', ' + secondCatName);
     
     firstCat = categoryNameToIndex[firstCatName];
-    console.log("firstCat index: " + firstCat);
     secondCat = categoryNameToIndex[secondCatName];
-    console.log("secondCat index: " + secondCat);
     firstType = "int";
     secondType = "int";
     categories.forEach(function (cat) {
@@ -177,6 +174,41 @@ function plot_categorical(unparsedData) {
             }
         }
     } // end for
+
+    // fix categorical ordering
+    // // CityPopulation
+    citypopulation_ordering = [
+        "less than 100,000",
+        "between 100,000 and 1 million",
+        "more than 1 million"
+    ];    
+    if (firstCatName === "CityPopulation") {
+        firstRange = citypopulation_ordering;
+    }
+    if (secondCatName === "CityPopulation") {
+        secondRange = citypopulation_ordering;
+    }
+    // // SchoolDegree
+    schooldegree_ordering = [
+        "no high school (secondary school)",
+        "some high school",
+        "high school diploma or equivalent (GED)",
+        "some college credit, no degree",
+        "associate's degree",
+        "trade, technical, or vocational training",
+        "bachelor's degree",
+        "master's degree (non-professional)",
+        "professional degree (MBA, MD, JD, etc.)",
+        "Ph.D."
+    ];
+    if (firstCatName === "SchoolDegree") {
+        console.log(firstRange);
+        console.log(schooldegree_ordering);
+        firstRange = schooldegree_ordering;
+    }
+    if (secondCatName === "SchoolDegree") {
+        secondRange = schooldegree_ordering;
+    }
 
     var colorScale = d3.scale.linear()
         .domain([0, countMax])
@@ -341,8 +373,8 @@ function plot_numerical(unparsedData) {
                 .duration(200)
                 .style('opacity', 1);
             tip.html('<div><span class="category">' + firstCatName + '</span><span class="value">' + d["firstVal"] + '</span><div style="clear: both;"></div></div>' +
-                '<div><span class="category">Count</span><span class="value">' + pairToCount[d["firstVal"] + ", " + d["secondVal"]] + '</span><div style="clear: both;"></div></div>' +
-                '<div><span class="category">' + secondCatName + '</span><span class="value">' + d["secondVal"] + '</span><div style="clear: both;"></div></div>')
+                '<div><span class="category">' + secondCatName + '</span><span class="value">' + d["secondVal"] + '</span><div style="clear: both;"></div></div>' + 
+                '<div><span class="category">Count</span><span class="value">' + pairToCount[d["firstVal"] + ", " + d["secondVal"]] + '</span><div style="clear: both;"></div></div>')
                 .style('left', (d3.event.pageX) + 10 + 'px')
                 .style('top', (d3.event.pageY) + 'px');
         })
@@ -435,34 +467,40 @@ function plot_numerical_categorical(unparsedData) {
     }
     
     // intuitive reordering
+    ordering = Object.keys(categoriesToValuesAndCounts);
     if (categoricalCatName === "CityPopulation") {
-       categoriesToValuesAndCounts["a. less than 100,000"] = categoriesToValuesAndCounts["less than 100,000"];
-       delete categoriesToValuesAndCounts["less than 100,000"];
-       categoriesToValuesAndCounts["b. between 100,000 and 1 million"] = categoriesToValuesAndCounts["between 100,000 and 1 million"];
-       delete categoriesToValuesAndCounts["between 100,000 and 1 million"];
-       categoriesToValuesAndCounts["c. more than 1 million"] = categoriesToValuesAndCounts["more than 1 million"];
-       delete categoriesToValuesAndCounts["more than 1 million"];
+        ordering = [
+            "less than 100,000",
+            "between 100,000 and 1 million",
+            "more than 1 million"
+        ];
+        categoriesToValuesAndCounts = {
+            "less than 100,000": categoriesToValuesAndCounts["less than 100,000"],
+            "between 100,000 and 1 million": categoriesToValuesAndCounts["between 100,000 and 1 million"],
+            "more than 1 million": categoriesToValuesAndCounts["more than 1 million"]
+        }
     }
     if (categoricalCatName === "SchoolDegree") {
-       categoriesToValuesAndCounts["a. some high school"] = categoriesToValuesAndCounts["some high school"];
-       delete categoriesToValuesAndCounts["some high school"];
-       categoriesToValuesAndCounts["b. high school diploma or equivalent (GED)"] = categoriesToValuesAndCounts["high school diploma or equivalent (GED)"];
-       delete categoriesToValuesAndCounts["high school diploma or equivalent (GED)"];
-       categoriesToValuesAndCounts["c. some college credit, no degree"] = categoriesToValuesAndCounts["some college credit, no degree"];
-       delete categoriesToValuesAndCounts["some college credit, no degree"];
-       categoriesToValuesAndCounts["d. associate's degree"] = categoriesToValuesAndCounts["associate's degree"];
-       delete categoriesToValuesAndCounts["associate's degree"];
-       categoriesToValuesAndCounts["e. trade, technical, or vocational training"] = categoriesToValuesAndCounts["trade, technical, or vocational training"];
-       delete categoriesToValuesAndCounts["trade, technical, or vocational training"];
-       categoriesToValuesAndCounts["f. bachelor's degree"] = categoriesToValuesAndCounts["bachelor's degree"];
-       delete categoriesToValuesAndCounts["bachelor's degree"];
-       categoriesToValuesAndCounts["g. master's degree (non- professional)"] = categoriesToValuesAndCounts["master's degree (non-professional)"];
-       delete categoriesToValuesAndCounts["master's degree (non-professional)"];
-       categoriesToValuesAndCounts["h. professional degree (MBA, MD, JD, etc.)"] = categoriesToValuesAndCounts["professional degree (MBA, MD, JD, etc.)"];
-       delete categoriesToValuesAndCounts["professional degree (MBA, MD, JD, etc.)"];
-       categoriesToValuesAndCounts["i. Ph.D."] = categoriesToValuesAndCounts["Ph.D."];
-       delete categoriesToValuesAndCounts["Ph.D."];
+        ordering = [
+            "no high school (secondary school)",
+            "some high school",
+            "high school diploma or equivalent (GED)",
+            "some college credit, no degree",
+            "associate's degree",
+            "trade, technical, or vocational training",
+            "bachelor's degree",
+            "master's degree (non-professional)",
+            "professional degree (MBA, MD, JD, etc.)",
+            "Ph.D."
+        ];
     }
+    newCat = {}
+    ordering.forEach(function(category) {
+        if (category in categoriesToValuesAndCounts) {
+            newCat[category] = categoriesToValuesAndCounts[category];
+        }
+    });
+    categoriesToValuesAndCounts = newCat;
 
     var yScale = d3.scale.linear()
         // max of the values across all type entries
