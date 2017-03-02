@@ -19,29 +19,33 @@
 			
 			div.tooltip {	
 				position: absolute;
-				background: #fff;
+				background: #cbeaea;
 				padding: 4px;
 				border-radius: 3px;
-				border: 1px solid #000;
+				border: 0px solid #000;
 				pointer-events: none;
 				font-family: sans-serif;
 				font-size: 11px;
+				
 			}
+			
+			        
 
 		</style>
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<!--<link rel="stylesheet" type="text/css" href="style.css">-->
 	</head>
 	<body>
 		<script type="text/javascript">
-			var width = window.outerWidth;
+			
 			var height = 300;
 			var paddingLeft = 40;
-			var paddingRight = 80;
+			var paddingRight = 40;
 			var paddingBottom = 50;
-			var paddingTop = 150;
-			var firstEntryPadding = 20;
-			var tip = tip = d3.select('body')
+			var paddingTop = 170;
+			var firstEntryPadding = 30;
+			var tip = d3.select('body')
 				.append('div')
 				.attr('class', 'tooltip')
 				.style('opacity', 0);
@@ -50,10 +54,10 @@
 				var dataset = [];
 				var years = [];
 				var maxNumWithinYear = 1;
-				for (var rowIndex in data) {
-					var numWithinYear = parseInt(data[rowIndex].numWithinYear)
-					var year = parseInt(data[rowIndex].year);
-					var text = data[rowIndex].text;	
+				for (var i = 0; i < data.length; i++) {
+					var numWithinYear = parseInt(data[i].numWithinYear);
+					var year = parseInt(data[i].year);
+					var text = data[i].text;	
 					dataset.push({
 						"numWithinYear": numWithinYear,
 						"year": year,
@@ -69,70 +73,82 @@
 				minDate = dataset[0].year;
 				maxDate = dataset[dataset.length-1].year;
 				
-				var svg = d3.select("body").append("svg")
-					.attr("width", width)
-					.attr("height", height);
-					
-				var xScale = d3.scale.linear()
-					.domain([minDate, maxDate])
-					.range([paddingLeft, width - paddingRight]);
-					
-				var yScale = d3.scale.linear()
-					.domain([1, maxNumWithinYear])
-					.range([height - paddingBottom - firstEntryPadding, paddingTop])
+				windowResize();
+				window.addEventListener("resize", windowResize);
 				
-				var xAxis = d3.svg.axis()
-					.scale(xScale)
-					.tickValues(years)
-					.tickFormat(d3.format("d"))
-					.orient("bottom");
+				function windowResize() {
+					var svgs = document.getElementsByTagName("svg");
+					for (var i = 0; i < svgs.length; i++) {
+						svgs[i].remove();
+					}
 					
-				svg.append("g")
-					.attr("class", "axis")
-					.attr("transform", "translate(0," + (height - paddingBottom) + ")")
-					.call(xAxis)
-					.selectAll("text")
-					.attr("y", 0)
-					.attr("x", 9)
-					.attr("dy", ".35em")
-					.attr("transform", "rotate(90)")
-					.style("text-anchor", "start");
+					var width = window.innerWidth * 0.95;
+				
+					var svg = d3.select("body").append("svg")
+						.attr("width", width)
+						.attr("height", height);
+
+					var xScale = d3.scale.linear()
+						.domain([minDate, maxDate])
+						.range([paddingLeft, width - paddingRight]);
+						
+					var yScale = d3.scale.linear()
+						.domain([1, maxNumWithinYear])
+						.range([height - paddingBottom - firstEntryPadding, paddingTop]);
 					
-				svg.selectAll("circle")
-					.data(dataset)
-					.enter()
-					.append("circle")
-					.attr("cx", function(d) {
-						return xScale(d.year);
-					})
-					.attr("cy", function(d) {
-						return yScale(d.numWithinYear);
-					})
-					.attr("r", function(d) {
-						return 5;
-					})
-					.style("fill", function(d) {
-						return d3.hsl("#004d99");
-					})
-					.on("mouseover", function(d) {
-						d3.select(this).style("fill", function(d) {
-							return d3.hsl("#00cc66");
-						});
-						tip.transition()
-							.duration(200)
-							.style('opacity', 1);
-						tip.html(d.text)
-							.style('left', (d3.event.pageX) + 10 + 'px')
-							.style('top', (d3.event.pageY) + 'px');
-							})
-					.on("mouseout", function(d) {
-						d3.select(this).style("fill", function(d) {
+					var xAxis = d3.svg.axis()
+						.scale(xScale)
+						.tickValues(years)
+						.tickFormat(d3.format("d"))
+						.orient("bottom");
+						
+					svg.append("g")
+						.attr("class", "axis")
+						.attr("transform", "translate(0," + (height - paddingBottom) + ")")
+						.call(xAxis)
+						.selectAll("text")
+						.attr("y", 0)
+						.attr("x", 9)
+						.attr("dy", ".35em")
+						.attr("transform", "rotate(90)")
+						.style("text-anchor", "start");
+						
+					svg.selectAll("circle")
+						.data(dataset)
+						.enter()
+						.append("circle")
+						.attr("cx", function(d) {
+							return xScale(d.year);
+						})
+						.attr("cy", function(d) {
+							return yScale(d.numWithinYear);
+						})
+						.attr("r", function() {
+							return 5;
+						})
+						.style("fill", function() {
 							return d3.hsl("#004d99");
-						});
-						tip.transition()
-							.duration(200)
-							.style('opacity', 0);
-						});
+						})
+						.on("mouseover", function(d) {
+							d3.select(this).style("fill", function() {
+								return d3.hsl("#a2bbbb");
+							});
+							tip.transition()
+								.duration(200)
+								.style('opacity', 1);
+							tip.html(d.text)
+								.style('left', (d3.event.pageX) + 10 + 'px')
+								.style('top', (d3.event.pageY) + 'px');
+								})
+						.on("mouseout", function() {
+							d3.select(this).style("fill", function() {
+								return d3.hsl("#004d99");
+							});
+							tip.transition()
+								.duration(200)
+								.style('opacity', 0);
+							});
+				}
 			});
 			
 		</script>
