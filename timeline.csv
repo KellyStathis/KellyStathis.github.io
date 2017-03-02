@@ -3,15 +3,15 @@ numWithinYear,year,text
 1,1923,Walter Pitts is born
 1,1935,Pitts reads Principia Mathematica in Detroit and writes to Russell
 1,1938,Pitts runs away from home to University of Chicago
-1,1941,Pitts meets Jerome Lettvin
-2,1941,Lettvin introduces Pitts to Warren McCulloch
-1,1943,Pitts and McCulloch publish “A Logical Calculus of Ideas Immanent in Nervous Activity”
+2,1941,Pitts meets Jerome Lettvin
+1,1941,Lettvin introduces Pitts to Warren McCulloch
+3,1943,Pitts and McCulloch publish “A Logical Calculus of Ideas Immanent in Nervous Activity”
 2,1943,Lettvin introduces Pitts to Norbert Wiener
-3,1943,Pitts starts PhD at MIT
+1,1943,Pitts starts PhD at MIT
 1,1944,Wiener introduces Pitts to John von Neumann
 1,1945,von Neumann publishes “First Draft of a Report on the EDVAC”
-1,1952,McCulloch comes to MIT
-2,1952,Wiener severs ties with Pitts and Lettvin
-1,1959,"Pitts, McCulloch, and Humberto Maturana publish “What the Frog's Eye Tells the Frog's Brain”"
-2,1959,"Pitts burns dissertation, refuses PhD"
+2,1952,McCulloch comes to MIT
+1,1952,Wiener severs ties with Pitts and Lettvin
+2,1959,"Pitts, McCulloch, and Humberto Maturana publish “What the Frog's Eye Tells the Frog's Brain”"
+1,1959,"Pitts burns dissertation, refuses PhD"
 1,1969,Pitts dies
