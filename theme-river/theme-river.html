@@ -33,19 +33,19 @@
 				font-size: 12px;
 			}
 			/* from http://bl.ocks.org/d3noob/a22c42db65eb00d4e369 */
-			div.tooltip {	
-				position: relative;			
-				text-align: center;			
-				width: 130px;						
-				padding: 2px;				
-				font: 12px sans-serif;		
+			div.tooltip {
+				position: relative;
+				text-align: center;
+				width: 130px;
+				padding: 2px;
+				font: 12px sans-serif;
 				background: #D6EAF8;
-				border: 1px;		
-				border-radius: 8px;					
+				border: 1px;
+				border-radius: 8px;
 			}
 
 		</style>
-        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <script type="text/javascript" src="../d3/d3.v3.js"></script>
         <!--<link rel="stylesheet" type="text/css" href="style.css">-->
     </head>
     <body>
@@ -55,7 +55,7 @@
 			var paddingBelowAxis = 20;
 			var paddingChart = 10;
 			var paddingSide = 50;
-			
+
 			// Parse CSV file to correct format for layers
 			d3.text("LISjobs.csv", function(unparsedData) {
 				var rows = d3.csv.parseRows(unparsedData);
@@ -85,20 +85,20 @@
 						};
 						dataset.push(rowObject);
 					}
-					
+
 					// Set up svg adn stack
 					var svg = d3.select("body").append("svg")
 						.attr("width", width)
 						.attr("height", height);
-				 
+
 					var stack = d3.layout.stack()
 						.offset("wiggle")
 						.values(function(d) {
 							return d.values;
 						});
-						
+
 					var layers = stack(dataset);
-					
+
 					// Find max and min:
 					var maxY = d3.max(layers, function(l){
 							return d3.max(l.values, function(v) {
@@ -115,21 +115,21 @@
 							return v.x;
 						});
 					});
-					
-					// Set up scales, axis, and area	
+
+					// Set up scales, axis, and area
 					var xScale = d3.scale.linear()
 						.domain([minX, maxX])
 						.range([paddingSide, width-paddingSide]);
-				
+
 					var yScale = d3.scale.linear()
 						.domain([0, maxY])
 						.range([height-paddingChart-paddingBelowAxis, paddingChart]);
-						
+
 					var xAxis = d3.svg.axis()
 						.scale(xScale)
 						.orient("bottom")
 						.ticks(numCols-1);
-					
+
 					var area = d3.svg.area()
 						.x(function(d) {
 							return xScale(d.x); })
@@ -138,13 +138,13 @@
 						.y1(function(d) {
 							return yScale(d.y0 + d.y);
 					});
-						
+
 					// Functions to calculate random colors
 					var color = function() {
 						var r = Math.floor(Math.random()*255);
 						var g = Math.floor(Math.random()*255);
 						var b = Math.floor(Math.random()*255);
-						
+
 						r = decimalToHex(r);
 						g = decimalToHex(g);
 						b = decimalToHex(b);
@@ -152,12 +152,12 @@
 						var hexColor = "#" + r + g + b;
 						return hexColor;
 					}
-					
+
 					// Helper function to convert decimal number between 0 and 255 to 2-digit hex
 					var decimalToHex = function(dec) {
 						var firstDigit = Math.floor(dec / 16);
 						var secondDigit = Math.floor(dec - (16*firstDigit));
-						
+
 						if (firstDigit == 10) {
                             firstDigit = "A";
                         }
@@ -179,7 +179,7 @@
 						else if (firstDigit < 10) {
                             firstDigit = firstDigit.toString();
                         }
-						
+
 						if (secondDigit == 10) {
                             secondDigit = "A";
                         }
@@ -201,10 +201,10 @@
 						else if (secondDigit < 10) {
                             secondDigit = secondDigit.toString();
                         }
-						
+
 						return "" + firstDigit + secondDigit;
 					}
-					
+
 					// Function to delete tooltips
 					var deleteTooltips = function() {
 						var tooltips = document.getElementsByClassName("tooltip");
@@ -215,7 +215,7 @@
 								}
 							}
 					}
-					
+
 					// Add paths for each layer
 					svg.selectAll("path")
 						.data(layers)
@@ -241,14 +241,14 @@
 						.on("mouseout", function() {
 							deleteTooltips();
 						});
-					
-					// Add x-axis	
+
+					// Add x-axis
 					svg.append("g")
 						.attr("class", "axis")
 						.attr("transform", "translate(0," + (height - paddingBelowAxis) + ")")
 						.call(xAxis);
 				});
-		
+
 			});
 		</script>
 		<a href="theme-river-data.html">[Data: LibraryJournal Placements and Salaries Surveys]</a>
