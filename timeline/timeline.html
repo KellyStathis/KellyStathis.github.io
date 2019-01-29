@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Timeline</title>
 		<style>
-			
+
 			.axis path,
 			.axis line {
 				fill: none;
@@ -16,8 +16,8 @@
 				font-family: sans-serif;
 				font-size: 11px;
 			}
-			
-			div.tooltip {	
+
+			div.tooltip {
 				position: absolute;
 				background: #cbeaea;
 				padding: 4px;
@@ -26,10 +26,10 @@
 				pointer-events: none;
 				font-family: sans-serif;
 				font-size: 11px;
-				
+
 			}
-			
-			        
+
+
 
 		</style>
 		<script type="text/javascript" src="d3/d3.v3.js"></script>
@@ -38,7 +38,7 @@
 	</head>
 	<body>
 		<script type="text/javascript">
-			
+
 			var height = 300;
 			var paddingLeft = 40;
 			var paddingRight = 40;
@@ -49,7 +49,7 @@
 				.append('div')
 				.attr('class', 'tooltip')
 				.style('opacity', 0);
-			
+
 			d3.csv("timeline.csv", function(data) {
 				var dataset = [];
 				var years = [];
@@ -57,7 +57,7 @@
 				for (var i = 0; i < data.length; i++) {
 					var numWithinYear = parseInt(data[i].numWithinYear);
 					var year = parseInt(data[i].year);
-					var text = data[i].text;	
+					var text = data[i].text;
 					dataset.push({
 						"numWithinYear": numWithinYear,
 						"year": year,
@@ -72,18 +72,18 @@
 				}
 				minDate = dataset[0].year;
 				maxDate = dataset[dataset.length-1].year;
-				
+
 				windowResize();
 				window.addEventListener("resize", windowResize);
-				
+
 				function windowResize() {
 					var svgs = document.getElementsByTagName("svg");
 					for (var i = 0; i < svgs.length; i++) {
 						svgs[i].remove();
 					}
-					
+
 					var width = window.innerWidth * 0.95;
-				
+
 					var svg = d3.select("body").append("svg")
 						.attr("width", width)
 						.attr("height", height);
@@ -91,17 +91,17 @@
 					var xScale = d3.scale.linear()
 						.domain([minDate, maxDate])
 						.range([paddingLeft, width - paddingRight]);
-						
+
 					var yScale = d3.scale.linear()
 						.domain([1, maxNumWithinYear])
 						.range([height - paddingBottom - firstEntryPadding, paddingTop]);
-					
+
 					var xAxis = d3.svg.axis()
 						.scale(xScale)
 						.tickValues(years)
 						.tickFormat(d3.format("d"))
 						.orient("bottom");
-						
+
 					svg.append("g")
 						.attr("class", "axis")
 						.attr("transform", "translate(0," + (height - paddingBottom) + ")")
@@ -112,7 +112,7 @@
 						.attr("dy", ".35em")
 						.attr("transform", "rotate(90)")
 						.style("text-anchor", "start");
-						
+
 					svg.selectAll("circle")
 						.data(dataset)
 						.enter()
@@ -150,7 +150,7 @@
 							});
 				}
 			});
-			
+
 		</script>
 	</body>
 </html>
