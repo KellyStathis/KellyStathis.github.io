@@ -92,30 +92,26 @@
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
 		  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-		    <div class="navbar-nav ml-auto">
+		    <!-- <div class="navbar-nav ml-auto">
 		      <a data-toggle="collapse" data-target=".navbar-collapse.show" ng-click="navToggle('home')" class="nav-item nav-link active" href="index-bootstrap.html">Home</a>
+					<a data-toggle="collapse" data-target=".navbar-collapse.show" ng-click="navToggle('work')" class="nav-item nav-link" href="#">Work</a>
 		      <a data-toggle="collapse" data-target=".navbar-collapse.show" ng-click="navToggle('contact')" class="nav-item nav-link" href="#">Contact</a>
-    		</div>
+    		</div> -->
 			</div>
 		</nav>
 		<main role="main" class="container-fluid" id="homeContainer">
-			<!--FIXME: is there a way to get the id name to use in "show==[id]"?-->
-			<div ng-show="show=='home'" id="home">
-				<div class="jumbotron jumbotron-fluid">
-  				<div class="container">
-    				<h1 class="display-4">Kelly Stathis</h1>
-  				</div>
-				</div>
-			</div>
-			<div class="container-fluid">
-				<div ng-show="show=='contact'" id="contact">
-					<div class="container text-center" style="margin-top:5rem">
-						<h2><a href="https://twitter.com/kelly_stathis">@kelly_stathis</a></h2>
-						<h2><a href="https://www.linkedin.com/in/kelly-stathis-1081376b/">linkedin</a></h2>
-						<h2><a href="https://github.com/KellyStathis">github</a></h2>
+				<div class="container-fluid">
+					<div class="container">
+						<h2>about</h2>
+						<p>I am a metadata librarian and software developer based in Vancouver, BC, Canada, working for the <a href="https://portagenetwork.ca/">Portage Network</a>.</p>
+						<p>You can contact me on:<p>
+						<ul>
+							<li><a href="https://twitter.com/kelly_stathis">twitter</a></li>
+							<li><a href="https://www.linkedin.com/in/kelly-stathis-1081376b/">linkedin</a></li>
+							<li><a href="https://github.com/KellyStathis">github</a></li>
+						</ul>
 					</div>
 				</div>
-			</div>
 		</main>
 	</body>
 </html>
